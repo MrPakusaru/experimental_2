@@ -1,0 +1,43 @@
+# Версия docker-compose, которую мы используем. Зависит от установленной версии docker
+version: '3.9'
+
+# Внутренняя сеть меж контейнерами
+networks:
+  app-network:
+    driver: bridge
+
+# Контейнеры
+services:
+  # Контейнер с приложением
+  application:
+    # Сборка из Dockerfile
+    build:
+      context: ..
+      dockerfile: Docker/application.Dockerfile
+    # Название контейнера для управления на хосте
+    container_name: c_application
+    # "Внутренняя сеть" для взаимодействия между контейнерами
+    networks:
+      - app-network
+    # Папки, в которых происходит дублирование файлов на сторонах >>> {на хосте}:{внутри контейнера}
+    volumes:
+      - ./Application:/var/www
+  # Сервер-контейнер
+  server:
+    # Сборка из образа nginx
+    image: nginx:1.22-alpine
+    # Название контейнера для управления на хосте
+    container_name: c_server
+    # {Порт на стороне хоста}:{Порт на стороне контейнера}
+    ports:
+      - "8000:80"
+    # "Внутренняя сеть" для взаимодействия между контейнерами
+    networks:
+      - app-network
+    # Папки, в которых происходит дублирование файлов на сторонах >>> {на хосте}:{внутри контейнера}
+    volumes:
+      - ../Nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../Application:/var/www
+    # Запускается или пакуется только после указанных ниже контейнеров (не их названий)
+    depends_on:
+      - application
