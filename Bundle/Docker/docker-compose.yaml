@@ -21,7 +21,7 @@ services:
       - app-network
     # Папки, в которых происходит дублирование файлов на сторонах >>> {на хосте}:{внутри контейнера}
     volumes:
-      - ./Application:/var/www
+      - ../Application:/var/www
   # Сервер-контейнер
   server:
     # Сборка из образа nginx
