@@ -14,6 +14,7 @@ services:
     build:
       context: ..
       dockerfile: Docker/application.Dockerfile
+    user: "1000:1000"
     # Название контейнера для управления на хосте
     container_name: c_application
     # "Внутренняя сеть" для взаимодействия между контейнерами

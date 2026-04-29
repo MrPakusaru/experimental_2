@@ -3,11 +3,11 @@ version: '3.9'
 
 services:
   # БД-контейнер
-  mysql:
-    # Сборка из образа mysql
-    image: mysql:8.0
-    # Название контейнера для управления на хосте
-    container_name: mysql_container
+  mariadb:
+    # Сборка из образа MariaDB
+    image: mariadb:11.4
+    # Название контейнера для удобства
+    container_name: mariadb_container
     # {Порт на хосте}:{Порт на стороне контейнера}
     ports:
       - "3316:3306"
