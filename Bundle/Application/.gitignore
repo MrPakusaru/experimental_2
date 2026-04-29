@@ -7,7 +7,6 @@
 .phpunit.result.cache
 /.codex
 /.cursor/
-/.idea
 /.nova
 /.phpunit.cache
 /.vscode
@@ -25,3 +24,6 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 .editorconfig
+notes
+.idea
+.php-cs-fixer.cache
