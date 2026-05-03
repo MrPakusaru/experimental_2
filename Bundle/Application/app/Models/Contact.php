@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Attributes\LinkedConfig;
-
-#[LinkedConfig('contact')]
-class Contact extends ModelCore
+final class Contact extends ModelCore
 {
+    public string $config = 'contact';
 }
