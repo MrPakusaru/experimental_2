@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
-use App\Core\Classes\Assertor;
-use App\Core\Traits\LinkConfig;
+use App\Core\Classes\Configurator;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Базовая модель
+ */
 class ModelCore extends Model
 {
-    use LinkConfig;
-
     /**
+     * Создаёт новый экземпляр модели
      * @throws Exception
      */
     public function __construct(array $attributes = [])
     {
+        static::whenBooted(function () {
+            (new Configurator($this))->configure();
+        });
         parent::__construct($attributes);
-        $assertor = new Assertor(static::class, $this->linkedConfig);
-        $assertor->assert($this);
     }
 }
