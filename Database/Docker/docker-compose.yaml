@@ -1,6 +1,12 @@
 # Версия docker-compose, которую мы используем. Зависит от установленной версии docker
 version: '3.9'
 
+# Внутренняя сеть меж контейнерами
+networks:
+  inter-network:
+    external: true
+    name: inter_network
+
 services:
   # БД-контейнер
   mariadb:
@@ -19,3 +25,5 @@ services:
     # Передача параметров из файла
     env_file:
       - .env
+    networks:
+      - inter-network

@@ -3,6 +3,9 @@ version: '3.9'
 
 # Внутренняя сеть меж контейнерами
 networks:
+  inter-network:
+    external: true
+    name: inter_network
   app-network:
     driver: bridge
 
@@ -22,6 +25,7 @@ services:
     # "Внутренняя сеть" для взаимодействия между контейнерами
     networks:
       - app-network
+      - inter-network
     # Папки, в которых происходит дублирование файлов на сторонах >>> {на хосте}:{внутри контейнера}
     volumes:
       - ../Application:/var/www
