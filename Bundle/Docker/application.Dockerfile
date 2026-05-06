@@ -5,7 +5,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install pdo_mysql zip
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Оригинальный вариант:
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Использование зеркала:
+COPY --from=mirror.gcr.io/library/composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 

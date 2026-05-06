@@ -3,6 +3,9 @@ version: '3.9'
 
 # Внутренняя сеть меж контейнерами
 networks:
+  inter-network:
+    external: true
+    name: inter_network
   app-network:
     driver: bridge
 
@@ -14,11 +17,15 @@ services:
     build:
       context: ..
       dockerfile: Docker/application.Dockerfile
+    user: "1000:1000"
     # Название контейнера для управления на хосте
     container_name: c_application
+    # При закрытии повторно запускается
+    restart: always
     # "Внутренняя сеть" для взаимодействия между контейнерами
     networks:
       - app-network
+      - inter-network
     # Папки, в которых происходит дублирование файлов на сторонах >>> {на хосте}:{внутри контейнера}
     volumes:
       - ../Application:/var/www
@@ -31,6 +38,8 @@ services:
     # {Порт на стороне хоста}:{Порт на стороне контейнера}
     ports:
       - "8000:80"
+    # При закрытии повторно запускается
+    restart: always
     # "Внутренняя сеть" для взаимодействия между контейнерами
     networks:
       - app-network
