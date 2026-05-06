@@ -2,32 +2,39 @@
 
 return [
     'core' => [
-        'table' => 'exp_contacts'
+        'table' => 'exp_contacts',
+        'available_params' => ['timestamps']
     ],
     'fields' => [
         'surname'  => [
+            'column' => 'SURNAME',
             'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ],
         'name'  => [
+            'column' => 'NAME',
             'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ],
         'last_name'  => [
+            'column' => 'LAST_NAME',
             'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ],
         'email' => [
+            'column' => 'EMAIL',
             'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ],
         'phone' => [
+            'column' => 'PHONE',
             'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ],
         'birth_date' => [
+            'column' => 'BIRTH_DATE',
             'cast' => 'date',
-            'requirements' => ['nullable', 'fillable'],
+            'requirements' => ['nullable'],
         ]
     ],
     'relations' => [
