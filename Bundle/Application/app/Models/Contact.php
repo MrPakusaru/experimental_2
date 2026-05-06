@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Core\Classes\Model;
+
 /**
  * Контакт
  *
@@ -12,7 +14,7 @@ namespace App\Models;
  * @property $phone
  * @property $birth_date
  */
-final class Contact extends ModelCore
+final class Contact extends Model
 {
     /**
      * @var string Имя конфигурации модели

@@ -3,7 +3,6 @@
 namespace App\Core\Classes;
 
 use App\Core\Exceptions\ConfigException;
-use App\Models\ModelCore;
 use Closure;
 use Exception;
 
@@ -12,11 +11,11 @@ class Configurator
     private ModelConfiguration $configuration;
 
     /**
-     * @param ModelCore $model
+     * @param Model $model
      * @throws Exception
      */
     public function __construct(
-        private readonly ModelCore $model
+        private readonly Model $model
     ) {
         $this->resolveConfigData();
     }
@@ -24,7 +23,7 @@ class Configurator
     /**
      * @throws Exception
      */
-    public static function new(ModelCore $model): static
+    public static function new(Model $model): static
     {
         return new static($model);
     }
