@@ -12,6 +12,8 @@ return new class () extends Migration {
     {
         Schema::create('exp_contacts', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->string('SURNAME', length: 50)->charset('utf8mb4')->nullable();
             $table->string('NAME', length: 50)->charset('utf8mb4')->nullable(false);
             $table->string('LAST_NAME', length: 50)->charset('utf8mb4')->nullable();
