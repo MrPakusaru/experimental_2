@@ -4,5 +4,8 @@ namespace App\Models;
 
 final class Contact extends ModelCore
 {
-    public string $config = 'contact';
+    /**
+     * @var string Имя конфигурации модели
+     */
+    public static string $config = 'contact';
 }

@@ -4,6 +4,7 @@ namespace App\Core\Classes;
 
 use App\Core\Exceptions\ConfigException;
 use App\Models\ModelCore;
+use Closure;
 use Exception;
 
 class Configurator
@@ -17,6 +18,15 @@ class Configurator
     public function __construct(
         private readonly ModelCore $model
     ) {
+        $this->resolveConfigData();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function new(ModelCore $model): static
+    {
+        return new static($model);
     }
 
     /**
@@ -25,9 +35,8 @@ class Configurator
      */
     public function configure(): void
     {
-        $this->resolveConfigData();
         $this->resolveCoreParams();
-
+        $this->resolveFieldsParams();
     }
 
     /**
@@ -36,35 +45,83 @@ class Configurator
      */
     private function resolveConfigData(): void
     {
-        if (!isset($this->model->config)) {
+        if ($this->model::$config === '') {
             throw new ConfigException(static::class, 'Отсутствует привязка к конфигурации модели');
         }
-        if (!is_string($this->model->config)) {
-            $type = gettype($this->model->config);
-            throw new ConfigException(static::class, "Поле 'config': ожидаемый тип 'string', получено '{$type}'");
-        }
-        $this->configuration = new ModelConfiguration($this->model->config);
+        $this->configuration = new ModelConfiguration($this->model::$config);
     }
 
     /**
+     * Устанавливает корневые параметры
      * @return void
      */
     private function resolveCoreParams(): void
     {
         $coreData = $this->configuration->getCoreData();
+
         $tableName = $coreData['table'];
         $this->model->setTable($tableName);
+
+        $this->model->timestamps = in_array('timestamps', $coreData['available_params']);
     }
-    private function resolveFieldsParams()
+
+    /**
+     * Устанавливает параметры для полей
+     * @return void
+     */
+    private function resolveFieldsParams(): void
     {
-//        $fields = $this->getFieldsData();
-//        foreach ($fields as $name => $params) {
-//            dump($name, $params); //TODO заполнение полей
-//        }
+        $fields = $this->configuration->getFieldsData();
+        $castsData = array_map(fn ($params) => $params['cast'], $fields);
+        $this->model->mergeCasts($castsData);
     }
 
     private function resolveRelationsParams()
     {
+    }
 
+    /**
+     * Преобразует названия колонок из БД в алиасы полей из конфигурации
+     * @param array $attributes
+     * @param bool $sync
+     * @param Closure $setRawAttributes
+     * @return mixed
+     */
+    public function setRawAttributes(array $attributes, bool $sync, Closure $setRawAttributes): mixed
+    {
+        $map = $this->configuration->getFieldsAliasesMap(true);
+
+        /**
+         * Возвращает алиас для соответствующей колонки
+         * @param string $colName
+         * @return string
+         */
+        $alias = function (string $colName) use ($map) {
+            return $map[$colName] ?? $colName;
+        };
+
+        $altributes = [];
+        foreach ($attributes as $colName => $value) {
+            $altributes[$alias($colName)] = $value;
+        }
+
+        return $setRawAttributes($altributes, $sync);
+    }
+
+    /**
+     * Преобразует алиасы полей из конфигурации в названия колонок из БД
+     * @param array $attributes
+     * @return array<string, mixed>
+     */
+    public function prepareFieldsToDB(array $attributes): array
+    {
+        $map = $this->configuration->getFieldsAliasesMap();
+        $preparedFields = [];
+        foreach ($attributes as $alias => $value) {
+            if (isset($map[$alias])) {
+                $preparedFields[$map[$alias]] = $value;
+            }
+        }
+        return $preparedFields;
     }
 }
