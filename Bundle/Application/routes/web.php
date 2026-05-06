@@ -1,15 +1,12 @@
 <?php
 
-use App\Models\Contact;
+use App\Http\Controllers\Dev\DevController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    //TODO: временное
-//    $c = new Contact();
-//    $c->temp();
-//    $c = new \App\Models\User();
-//    dd($c);
-    //return view('welcome');
-    $contact = Contact::query()->first();
-    dd($contact);
+    return view('welcome');
+});
+
+Route::group(['prefix' => 'dev'], function () {
+    Route::get('/', [DevController::class, 'sandbox']);
 });
