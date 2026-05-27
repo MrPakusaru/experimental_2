@@ -6,7 +6,12 @@ use App\Core\Exceptions\ConfigException;
 
 class ModelConfiguration
 {
-    /**+
+    /**
+     * Расположение конфигурации моделей по умолчанию
+     */
+    private const string DEFAULT_CONFIG_LOCATION = 'models';
+
+    /**
      * @var array Корневые данные модели
      */
     private array $core;
@@ -51,7 +56,8 @@ class ModelConfiguration
      */
     private static function getConfigData($name): array
     {
-        $data = config("models.{$name}", []);
+        $modelConfigLocation = static::DEFAULT_CONFIG_LOCATION . '.' . $name;
+        $data = config($modelConfigLocation, []);
         if (empty($data)) {
             throw new ConfigException(static::class, "Конфигурация '{$name}' отсутствует");
         }
