@@ -2,13 +2,14 @@
 
 namespace App\Core\Classes;
 
+use App\Core\Configuration\Configurator;
 use Exception;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
  * Базовая модель
  */
-class Model extends EloquentModel
+abstract class Model extends EloquentModel
 {
     /**
      * @var string Имя конфигурации модели

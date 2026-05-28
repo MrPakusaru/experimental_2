@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Core\Classes;
+namespace App\Core\Configuration;
 
+use App\Core\Classes\Model;
+use App\Core\Configuration\Objects\ModelConfiguration;
 use App\Core\Exceptions\ConfigException;
 use Closure;
 use Exception;
@@ -58,10 +60,14 @@ class Configurator
     {
         $coreData = $this->configuration->getCoreData();
 
-        $tableName = $coreData['table'];
-        $this->model->setTable($tableName);
+        $this->model->setTable($coreData->getTable());
 
-        $this->model->timestamps = in_array('timestamps', $coreData['available_params']);
+        $connection = $coreData->getConnection();
+        if (!empty($connection)) {
+            $this->model->setConnection($connection);
+        }
+
+        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams());
     }
 
     /**

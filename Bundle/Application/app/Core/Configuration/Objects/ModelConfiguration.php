@@ -1,26 +1,37 @@
 <?php
 
-namespace App\Core\Classes;
+namespace App\Core\Configuration\Objects;
 
+use App\Core\Configuration\ModelConfigurationChecker;
 use App\Core\Exceptions\ConfigException;
 
+/**
+ * TODO добавить подпись
+ */
 class ModelConfiguration
 {
     /**
      * Расположение конфигурации моделей по умолчанию
      */
-    private const string DEFAULT_CONFIG_LOCATION = 'models';
+    private const string DEFAULT_CONFIG_LOCATION = 'core.models';
 
     /**
-     * @var array Корневые данные модели
+     * Сырые данные конфигурации
      */
-    private array $core;
+    private array $rawData;
+
     /**
-     * @var array Данные полей модели
+     * Корневые данные модели
+     */
+    private ModelCoreConfig $core;
+
+    /**
+     * Данные полей модели
      */
     private array $fields;
+
     /**
-     * @var array Данные отношений модели к другим
+     * Данные отношений модели к другим
      */
     private array $relations;
 
@@ -30,58 +41,38 @@ class ModelConfiguration
      */
     public function __construct(string $configName)
     {
-        $data = static::getConfigData($configName);
-        $this->dataInitialize($data);
+        $this->getConfigData($configName);
+        $this->initData();
     }
 
     /**
      * Наполняет поля данными из конфигурации модели
-     * @throws ConfigException
      */
-    private function dataInitialize(array $data): void
+    private function initData(): void
     {
-        static::checkSection('core', $data);
-        $this->core = $data['core'];
+        $this->core = ModelCoreConfig::make($this->rawData);
 
-        static::checkSection('fields', $data);
-        $this->fields = $data['fields'];
+        $this->fields = $this->rawData['fields'];
 
-        static::checkSection('relations', $data);
-        $this->relations = $data['relations'];
+        $this->relations = $this->rawData['relations'];
     }
 
     /**
-     * Получает данные конфигурации по названию
+     * Получает данные конфигурации по её названию
      * @throws ConfigException
      */
-    private static function getConfigData($name): array
+    private function getConfigData($name): void
     {
         $modelConfigLocation = static::DEFAULT_CONFIG_LOCATION . '.' . $name;
-        $data = config($modelConfigLocation, []);
-        if (empty($data)) {
-            throw new ConfigException(static::class, "Конфигурация '{$name}' отсутствует");
-        }
-        return $data;
-    }
-
-    /**
-     * Проверяет раздел на существование
-     * @var string $nameNode Название раздела
-     * @var array $data Массив данных
-     * @throws ConfigException
-     */
-    private static function checkSection(string $nameNode, array $data): void
-    {
-        if (!isset($data[$nameNode])) {
-            throw new ConfigException(static::class, "В конфигурации модели отсутствует поле [{$nameNode}]");
-        }
+        $this->rawData = config($modelConfigLocation, []);
+        $this->validate();
     }
 
     /**
      * Возвращает корневые данные модели
-     * @return array
+     * @return ModelCoreConfig
      */
-    public function getCoreData(): array
+    public function getCoreData(): ModelCoreConfig
     {
         return $this->core;
     }
@@ -124,5 +115,14 @@ class ModelConfiguration
     public function getRelationsData(): array
     {
         return $this->relations;
+    }
+
+    /**
+     * TODO добавить подпись
+     * @throws ConfigException
+     */
+    public function validate(): void
+    {
+        ModelConfigurationChecker::new(static::class)->validate($this->rawData);
     }
 }

@@ -3,6 +3,7 @@
 return [
     'core' => [
         'table' => 'exp_contacts',
+        'connection' => '',
         'available_params' => ['timestamps']
     ],
     'fields' => [
