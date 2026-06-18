@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Core\Configuration\Objects;
+namespace App\Core\Configuration;
 
-use App\Core\Configuration\ModelConfigurationChecker;
+use App\Core\Classes\Checker;
+use App\Core\Configuration\Sections\SectionCore;
+use App\Core\Configuration\Sections\SectionFields;
+use App\Core\Exceptions\CheckerException;
 use App\Core\Exceptions\ConfigException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /**
  * TODO добавить подпись
@@ -15,6 +19,8 @@ class ModelConfiguration
      */
     private const string DEFAULT_CONFIG_LOCATION = 'core.models';
 
+    private Checker $checker;
+
     /**
      * Сырые данные конфигурации
      */
@@ -23,12 +29,12 @@ class ModelConfiguration
     /**
      * Корневые данные модели
      */
-    private ModelCoreConfig $core;
+    private SectionCore $core;
 
     /**
      * Данные полей модели
      */
-    private array $fields;
+    private SectionFields $fields;
 
     /**
      * Данные отношений модели к другим
@@ -37,51 +43,55 @@ class ModelConfiguration
 
     /**
      * Собирается по данным из конфигурации модели
+     * @throws CheckerException
      * @throws ConfigException
+     * @throws BindingResolutionException
      */
     public function __construct(string $configName)
     {
+        $this->checker = Checker::new();
+
         $this->getConfigData($configName);
         $this->initData();
     }
 
     /**
      * Наполняет поля данными из конфигурации модели
+     * @throws ConfigException
+     * @throws CheckerException
      */
     private function initData(): void
     {
-        $this->core = ModelCoreConfig::make($this->rawData);
-
-        $this->fields = $this->rawData['fields'];
-
-        $this->relations = $this->rawData['relations'];
+        $this->core = SectionCore::make($this->checker, $this->rawData);
+        $this->fields = SectionFields::makeArray($this->checker, $this->rawData);
+        $this->relations = $this->rawData['relations']; //TODO
     }
 
     /**
      * Получает данные конфигурации по её названию
-     * @throws ConfigException
+     * @throws CheckerException
      */
     private function getConfigData($name): void
     {
         $modelConfigLocation = static::DEFAULT_CONFIG_LOCATION . '.' . $name;
         $this->rawData = config($modelConfigLocation, []);
-        $this->validate();
+        $this->checker->configDataValidate($this->rawData);
     }
 
     /**
      * Возвращает корневые данные модели
-     * @return ModelCoreConfig
+     * @return SectionCore
      */
-    public function getCoreData(): ModelCoreConfig
+    public function getCoreData(): SectionCore
     {
         return $this->core;
     }
 
     /**
      * Возвращает данные полей модели
-     * @return array
+     * @return SectionFields
      */
-    public function getFieldsData(): array
+    public function getFields(): SectionFields
     {
         return $this->fields;
     }
@@ -95,17 +105,7 @@ class ModelConfiguration
      */
     public function getFieldsAliasesMap(bool $isInverted = false): array
     {
-        /* [alias => COL_NAME] */
-        if (!$isInverted) {
-            return array_map(fn ($field) => $field['column'], $this->fields);
-        }
-
-        /* [COL_NAME => alias] */
-        $columnAliasesMap = [];
-        foreach ($this->fields as $alias => $field) {
-            $columnAliasesMap[$field['column']] = $alias;
-        }
-        return $columnAliasesMap;
+        return $this->fields->getAliasesMap($isInverted);
     }
 
     /**
@@ -115,14 +115,5 @@ class ModelConfiguration
     public function getRelationsData(): array
     {
         return $this->relations;
-    }
-
-    /**
-     * TODO добавить подпись
-     * @throws ConfigException
-     */
-    public function validate(): void
-    {
-        ModelConfigurationChecker::new(static::class)->validate($this->rawData);
     }
 }

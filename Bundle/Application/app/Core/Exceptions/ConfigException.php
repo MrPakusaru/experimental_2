@@ -2,11 +2,17 @@
 
 namespace App\Core\Exceptions;
 
-class ConfigException extends \Exception
+use Exception;
+
+class ConfigException extends Exception
 {
-    public function __construct(string $className = '', string $message = '')
+    /**
+     * Конвертирует входящее исключение в текущее
+     * @param Exception $e
+     * @return $this
+     */
+    public static function from(Exception $e): static
     {
-        $text = ($className !== '' ? "[{$className}] " : '') . $message;
-        parent::__construct($text);
+        return new static($e->getMessage());
     }
 }

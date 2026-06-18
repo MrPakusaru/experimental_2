@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Classes\Model;
+use App\Core\Model;
 
 /**
  * Контакт

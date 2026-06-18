@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Configuration;
+namespace App\Core\Classes;
 
-use App\Core\Classes\Model;
-use App\Core\Configuration\Objects\ModelConfiguration;
+use App\Core\Configuration\ModelConfiguration;
 use App\Core\Exceptions\ConfigException;
+use App\Core\Model;
 use Closure;
 use Exception;
 
@@ -47,7 +47,7 @@ class Configurator
     private function resolveConfigData(): void
     {
         if ($this->model::$config === '') {
-            throw new ConfigException(static::class, 'Отсутствует привязка к конфигурации модели');
+            throw new ConfigException('Отсутствует привязка к конфигурации модели');
         }
         $this->configuration = new ModelConfiguration($this->model::$config);
     }
@@ -67,7 +67,7 @@ class Configurator
             $this->model->setConnection($connection);
         }
 
-        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams());
+        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams()); // TODO вынести в CoreData
     }
 
     /**
@@ -76,13 +76,14 @@ class Configurator
      */
     private function resolveFieldsParams(): void
     {
-        $fields = $this->configuration->getFieldsData();
-        $castsData = array_map(fn ($params) => $params['cast'], $fields);
+        $fields = $this->configuration->getFields();
+        $castsData = $fields->getCastsMap();
         $this->model->mergeCasts($castsData);
     }
 
     private function resolveRelationsParams()
     {
+        //TODO
     }
 
     /**
