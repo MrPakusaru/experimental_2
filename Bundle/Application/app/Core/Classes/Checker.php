@@ -10,14 +10,9 @@ use Illuminate\Validation\Factory as Validators;
 /**
  * Проверяет данные на соответствие правилам
  */
-final class Checker
+final readonly class Checker
 {
-    /**
-     * Расположение конфигурации моделей
-     */
-    private const string VALIDATION_CONFIG_LOCATION = 'core.validation.model';
-
-    private readonly Validators $validators;
+    private Validators $validators;
 
     /**
      * Возвращает новый экземпляр
@@ -33,27 +28,7 @@ final class Checker
     }
 
     /**
-     * Проводит валидацию конфигурации модели
-     *
-     * @throws CheckerException
-     */
-    public function configDataValidate(array $configData): void
-    {
-        $rules = config(self::VALIDATION_CONFIG_LOCATION, []);
-        if (empty($rules)) {
-            return;
-        }
-
-        $validator = $this->validators->make($configData, $rules);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->toArray();
-            $text = implode(', ' . PHP_EOL, $errors);
-            throw new CheckerException($text);
-        }
-    }
-
-    /**
-     * Проводит валидацию параметра на соответствие параметрам
+     * Проводит валидацию параметра на соответствие правилам
      *
      * @param string $fieldName
      * @param mixed $data Значение
@@ -61,7 +36,7 @@ final class Checker
      * @return mixed
      * @throws CheckerException
      */
-    public function validateData(string $fieldName, mixed $data, string $rules): mixed
+    public function validateParam(string $fieldName, mixed $data, string $rules): mixed
     {
         $validator = $this->validators->make(
             ["fieldname" => $data],
@@ -70,6 +45,26 @@ final class Checker
 
         if ($validator->fails()) {
             $msg = str_replace("fieldname", "'{$fieldName}'", $validator->errors()->first());
+            throw new CheckerException($msg);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Проводит валидацию набора данных на соответствие правилам
+     *
+     * @param array $data Набор данных
+     * @param array $rules Правила валидации
+     * @return array
+     * @throws CheckerException
+     */
+    public function validateData(array $data, array $rules): array
+    {
+        $validator = $this->validators->make($data, $rules);
+
+        if ($validator->fails()) {
+            $msg = str_replace(["The ", " field"], ["The '", "' field"], $validator->errors()->first());
             throw new CheckerException($msg);
         }
 

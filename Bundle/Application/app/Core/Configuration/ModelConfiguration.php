@@ -69,13 +69,11 @@ class ModelConfiguration
 
     /**
      * Получает данные конфигурации по её названию
-     * @throws CheckerException
      */
     private function getConfigData($name): void
     {
         $modelConfigLocation = static::DEFAULT_CONFIG_LOCATION . '.' . $name;
         $this->rawData = config($modelConfigLocation, []);
-        $this->checker->configDataValidate($this->rawData);
     }
 
     /**
