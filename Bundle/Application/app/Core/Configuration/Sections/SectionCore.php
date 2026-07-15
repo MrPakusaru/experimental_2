@@ -3,8 +3,8 @@
 namespace App\Core\Configuration\Sections;
 
 use App\Core\Classes\Checker;
-use App\Core\Exceptions\CheckerException;
 use App\Core\Exceptions\ConfigException;
+use Exception;
 
 /**
  * Корневые данные модели
@@ -45,10 +45,10 @@ final class SectionCore
 
         $core = new self();
         try {
-            $core->table = $checker->validateData('table', $coreData['table'], 'required|string');
-            $core->connection = $checker->validateData('connection', $coreData['connection'], 'nullable|string');
-            $core->availableParams = $checker->validateData('available_params', $coreData['available_params'], 'required|array');
-        } catch (CheckerException $e) {
+            $core->table = $checker->validateParam('table', $coreData['table'], 'required|string');
+            $core->connection = $checker->validateParam('connection', $coreData['connection'], 'nullable|string');
+            $core->availableParams = $checker->validateParam('available_params', $coreData['available_params'], 'required|array');
+        } catch (Exception $e) {
             throw ConfigException::from($e);
         }
 

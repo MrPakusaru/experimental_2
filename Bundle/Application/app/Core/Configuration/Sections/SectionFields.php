@@ -28,14 +28,14 @@ final class SectionFields
      * @throws CheckerException
      * @throws ConfigException
      */
-    public static function makeArray(Checker $checker, array $configRawData): self
+    public static function makeSet(Checker $checker, array $configRawData): self
     {
         $fieldsData = $configRawData[self::CONFIG_DATA_KEY];
 
         $sectionFields = new self();
 
         foreach ($fieldsData as $fieldName => $rawData) {
-            $name = $checker->validateData('fieldName', $fieldName, 'required|string');
+            $name = $checker->validateParam('fieldName', $fieldName, 'required|string');
 
             if (isset($sectionFields->fields[$name])) {
                 throw new ConfigException("Поле с названием {$fieldName} указано в конфигурации более 1 раза");

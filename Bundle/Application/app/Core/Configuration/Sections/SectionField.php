@@ -21,17 +21,21 @@ final class SectionField
      * @return self
      * @throws CheckerException
      */
-    public static function make(Checker $checker, string $alias, array $fieldRawData)
+    public static function make(Checker $checker, string $alias, array $fieldRawData): self
     {
         $field = new self();
 
-        $field->alias = $checker->validateData('alias', $alias, 'required|string');
+        $field->alias = $checker->validateParam('alias', $alias, 'required|string');
 
-        $field->column = $checker->validateData('column', $fieldRawData['column'], 'required|string');
-        $field->cast = $checker->validateData('cast', $fieldRawData['cast'], 'required|string'); //TODO разрешить отсутствие поля
+        $rawData = $checker->validateData($fieldRawData, [
+            'column' => 'required',
+            'cast' => 'present',
+            'requirements' => 'present|array',
+        ]);
 
-        $requirements = $checker->validateData('column', $fieldRawData['requirements'], 'required|array');
-        $field->nullable = in_array('nullable', $requirements); //TODO дописать применение
+        $field->column = $checker->validateParam('column', $rawData['column'], 'required|string');
+        $field->cast = $checker->validateParam('cast', $rawData['cast'], 'nullable|string');
+        $field->nullable = in_array('nullable', $rawData['requirements']);
 
         return $field;
     }
@@ -70,8 +74,8 @@ final class SectionField
      */
     public function getAliasColumn(bool $inverted = false): array
     {
+        /* [COL_NAME => alias] */
         if ($inverted) {
-            /* [COL_NAME => alias] */
             return [$this->column => $this->alias];
         }
 
