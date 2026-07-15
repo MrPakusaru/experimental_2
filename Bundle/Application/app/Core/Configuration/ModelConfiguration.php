@@ -63,7 +63,7 @@ class ModelConfiguration
     private function initData(): void
     {
         $this->core = SectionCore::make($this->checker, $this->rawData);
-        $this->fields = SectionFields::makeArray($this->checker, $this->rawData);
+        $this->fields = SectionFields::makeSet($this->checker, $this->rawData);
         $this->relations = $this->rawData['relations']; //TODO
     }
 
