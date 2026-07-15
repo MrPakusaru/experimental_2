@@ -95,18 +95,6 @@ class ModelConfiguration
     }
 
     /**
-     * Возвращает маппинг колонок в БД на алиасы полей в конфигурации
-     *
-     * По умолчанию возвращает [alias => COL_NAME]. При инверсии [COL_NAME => alias]
-     * @param bool $isInverted
-     * @return array
-     */
-    public function getFieldsAliasesMap(bool $isInverted = false): array
-    {
-        return $this->fields->getAliasesMap($isInverted);
-    }
-
-    /**
      * Возвращает данные отношений модели к другим
      * @return array
      */

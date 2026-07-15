@@ -95,7 +95,7 @@ class Configurator
      */
     public function setRawAttributes(array $attributes, bool $sync, Closure $setRawAttributes): mixed
     {
-        $map = $this->configuration->getFieldsAliasesMap(true);
+        $map = $this->configuration->getFields()->getAliasesMap(true);
 
         /**
          * Возвращает алиас для соответствующей колонки
@@ -121,7 +121,7 @@ class Configurator
      */
     public function prepareFieldsToDB(array $attributes): array
     {
-        $map = $this->configuration->getFieldsAliasesMap();
+        $map = $this->configuration->getFields()->getAliasesMap();
         $preparedFields = [];
         foreach ($attributes as $alias => $value) {
             if (isset($map[$alias])) {
