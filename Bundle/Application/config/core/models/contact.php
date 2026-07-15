@@ -7,42 +7,47 @@ return [
         'available_params' => ['timestamps']
     ],
     'fields' => [
+        'user_link' => [
+            'column' => 'USER_ID',
+            'cast' => '',
+            'requirements' => ['fillable'],
+        ],
         'surname'  => [
             'column' => 'SURNAME',
             'cast' => 'string',
-            'requirements' => ['nullable'],
+            'requirements' => ['nullable', 'fillable'],
         ],
         'name'  => [
             'column' => 'NAME',
             'cast' => 'string',
-            'requirements' => ['nullable'],
+            'requirements' => ['nullable', 'fillable'],
         ],
         'last_name'  => [
             'column' => 'LAST_NAME',
             'cast' => 'string',
-            'requirements' => ['nullable'],
+            'requirements' => ['nullable', 'fillable'],
         ],
         'email' => [
             'column' => 'EMAIL',
             'cast' => 'string',
-            'requirements' => ['nullable'],
+            'requirements' => ['nullable', 'fillable'],
         ],
         'phone' => [
             'column' => 'PHONE',
             'cast' => 'string',
-            'requirements' => ['nullable'],
+            'requirements' => ['nullable', 'fillable'],
         ],
         'birth_date' => [
             'column' => 'BIRTH_DATE',
-            'cast' => 'date',
-            'requirements' => ['nullable'],
+            'cast' => '',
+            'requirements' => ['fillable'],
         ]
     ],
-    'relations' => [
-        'contacts' => [
-            'type'   => 'many',
-            'entity' => 'contact',
-            'foreign_key' => 'user_id',
-        ],
-    ],
+     'relations' => [
+         // 'contacts' => [
+         //     'type'   => 'many',
+         //     'entity' => 'contact',
+         //     'foreign_key' => 'user_id',
+         // ],
+     ],
 ];
