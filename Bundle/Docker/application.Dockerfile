@@ -5,12 +5,18 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install pdo_mysql zip
 
+# Изменение UID и GID для www-data на 1000
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+
+# Очистка кэша apt
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www
+
 # Оригинальный вариант:
 # COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Использование зеркала:
 COPY --from=mirror.gcr.io/library/composer:latest /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www
 
 # Копирование файлов, сразу назначая владельца www-data
 COPY --chown=www-data:www-data ./Application .
