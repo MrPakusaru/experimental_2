@@ -68,7 +68,7 @@ class ModelConfiguration
     {
         $this->core = SectionCore::make($this->checker, $this->rawData);
         $this->fields = SectionFields::makeSet($this->checker, $this->rawData);
-        $this->relations = $this->rawData['relations']; //TODO
+        $this->relations = $this->rawData['relations'];
     }
 
     /**

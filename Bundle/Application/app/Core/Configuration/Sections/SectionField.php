@@ -64,7 +64,7 @@ final class SectionField
     }
 
     /**
-     * TODO
+     * Может ли поля иметь значение null
      * @return bool
      */
     public function isNullable(): bool

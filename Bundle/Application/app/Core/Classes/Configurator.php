@@ -8,6 +8,9 @@ use App\Core\Model;
 use Closure;
 use Exception;
 
+/**
+ * Устанавливает параметры модели в соответствии с её конфигурацией
+ */
 class Configurator
 {
 

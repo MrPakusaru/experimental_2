@@ -6,6 +6,9 @@ use App\Core\Classes\Checker;
 use App\Core\Exceptions\CheckerException;
 use App\Core\Exceptions\ConfigException;
 
+/**
+ * Класс, управляющий параметрами полей модели
+ */
 final class SectionFields
 {
     /**
@@ -14,7 +17,7 @@ final class SectionFields
     private const string CONFIG_DATA_KEY = 'fields';
 
     /**
-     * @var SectionField[]
+     * @var array<string, SectionField> Набор полей
      */
     private array $fields;
     private array $aliases;
