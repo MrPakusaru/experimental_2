@@ -5,12 +5,16 @@ namespace App\Core\Configuration\Sections;
 use App\Core\Classes\Checker;
 use App\Core\Exceptions\CheckerException;
 
+/**
+ * Класс, управляющий параметрами поля модели
+ */
 final class SectionField
 {
     private string $alias;
     private string $column;
     private string $cast;
     private bool $nullable;
+    private bool $fillable;
 
     /**
      * Формирует набор данных поля модели
@@ -36,6 +40,7 @@ final class SectionField
         $field->column = $checker->validateParam('column', $rawData['column'], 'required|string');
         $field->cast = $checker->validateParam('cast', $rawData['cast'], 'nullable|string');
         $field->nullable = in_array('nullable', $rawData['requirements']);
+        $field->fillable = in_array('fillable', $rawData['requirements']);
 
         return $field;
     }
@@ -65,30 +70,5 @@ final class SectionField
     public function isNullable(): bool
     {
         return $this->nullable;
-    }
-
-    /**
-     * Возвращает спаренное значение (alias) -> (COL_NAME)
-     * @param bool $inverted Нужно ли инвертировать ключ-значение (COL_NAME) -> (alias)
-     * @return array<string,string>
-     */
-    public function getAliasColumn(bool $inverted = false): array
-    {
-        /* [COL_NAME => alias] */
-        if ($inverted) {
-            return [$this->column => $this->alias];
-        }
-
-        /* [alias => COL_NAME] */
-        return [$this->alias => $this->column];
-    }
-
-    /**
-     * Возвращает спаренное значение (alias) -> (cast)
-     * @return string[]
-     */
-    public function getAliasCast(): array
-    {
-        return [$this->alias => $this->cast];
     }
 }

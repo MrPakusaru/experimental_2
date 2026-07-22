@@ -91,8 +91,10 @@ final class SectionFields
     public function getAliasesMap(bool $isInverted = false): array
     {
         $columnAliasesMap = [];
-        foreach ($this->fields as $field) {
-            $columnAliasesMap += $field->getAliasColumn($isInverted);
+        foreach ($this->fields as $alias => $field) {
+            $isInverted
+                ? $columnAliasesMap[$field->getColumn()] = $alias
+                : $columnAliasesMap[$alias] = $field->getColumn();
         }
 
         return $columnAliasesMap;
@@ -106,8 +108,10 @@ final class SectionFields
     public function getCastsMap(): array
     {
         $castsMap = [];
-        foreach ($this->fields as $field) {
-            $castsMap += $field->getAliasCast();
+        foreach ($this->fields as $alias => $field) {
+            if (!empty($field->getCast())) {
+                $castsMap[$alias] = $field->getCast();
+            }
         }
 
         return $castsMap;
