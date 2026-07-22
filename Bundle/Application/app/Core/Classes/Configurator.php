@@ -66,6 +66,7 @@ class Configurator
     private function resolveCoreParams(): void
     {
         $coreData = $this->configuration->getCoreData();
+        // TODO: связать с HasUniqueIds
 
         $this->model->setTable($coreData->getTable());
 
@@ -74,7 +75,9 @@ class Configurator
             $this->model->setConnection($connection);
         }
 
-        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams()); // TODO вынести в CoreData
+        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams());
+        // TODO вынести в CoreData
+        // TODO: связать с HasTimestamps
     }
 
     /**
@@ -84,13 +87,24 @@ class Configurator
     private function resolveFieldsParams(): void
     {
         $fields = $this->configuration->getFields();
+
         $castsData = $fields->getCastsMap();
         $this->model->mergeCasts($castsData);
+        // TODO: связать с HasAttributes
+
+
+
+        $fillableSet = $fields->getFillableSet();
+        if (!empty($fillableSet)) {
+            $this->model->fillable($fields->getFillableSet());
+            $this->model->guard([]);
+        }
+        //TODO: связать с GuardAttributes
     }
 
     private function resolveRelationsParams()
     {
-        //TODO
+        //TODO соединить логику с HasRelationships
     }
 
     /**
