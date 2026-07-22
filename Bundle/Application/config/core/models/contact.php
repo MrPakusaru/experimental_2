@@ -12,18 +12,18 @@ return [
             'cast' => '',
             'requirements' => ['fillable'],
         ],
-        'surname'  => [
-            'column' => 'SURNAME',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
-        ],
         'name'  => [
             'column' => 'NAME',
             'cast' => 'string',
             'requirements' => ['nullable', 'fillable'],
         ],
-        'last_name'  => [
-            'column' => 'LAST_NAME',
+        'surname'  => [
+            'column' => 'SURNAME',
+            'cast' => 'string',
+            'requirements' => ['nullable', 'fillable'],
+        ],
+        'middle_name'  => [
+            'column' => 'MIDDLE_NAME',
             'cast' => 'string',
             'requirements' => ['nullable', 'fillable'],
         ],
