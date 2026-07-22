@@ -10,6 +10,10 @@ use Exception;
 
 class Configurator
 {
+
+    /**
+     * @var ModelConfiguration Конфигурация модели
+     */
     private ModelConfiguration $configuration;
 
     /**
@@ -49,7 +53,7 @@ class Configurator
         if ($this->model::$config === '') {
             throw new ConfigException('Отсутствует привязка к конфигурации модели');
         }
-        $this->configuration = new ModelConfiguration($this->model::$config);
+        $this->configuration = ModelConfiguration::make($this->model::$config);
     }
 
     /**
