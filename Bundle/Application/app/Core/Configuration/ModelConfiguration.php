@@ -10,7 +10,7 @@ use App\Core\Exceptions\ConfigException;
 use App\Core\Traits\SavedNamedInstances;
 
 /**
- * TODO добавить подпись
+ * Содержит обработанные параметры модели
  */
 class ModelConfiguration
 {
