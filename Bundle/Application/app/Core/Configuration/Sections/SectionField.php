@@ -71,4 +71,22 @@ final class SectionField
     {
         return $this->nullable;
     }
+
+    /**
+     * Доступно ли поле для массового заполнения
+     * @return bool
+     */
+    public function isFillable(): bool
+    {
+        return $this->fillable;
+    }
+
+    /**
+     * Возвращает свойство 'кастинг'
+     * @return string
+     */
+    public function getCast(): string
+    {
+        return $this->cast;
+    }
 }

@@ -119,4 +119,19 @@ final class SectionFields
 
         return $castsMap;
     }
+
+    /**
+     * Возвращает набор алиасов fillable полей
+     * @return array
+     */
+    public function getFillableSet(): array
+    {
+        $fillableSet = [];
+        foreach ($this->fields as $alias => $field) {
+            if ($field->isFillable()) {
+                $fillableSet[] = $alias;
+            }
+        }
+        return $fillableSet;
+    }
 }
