@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Core\Classes\Model;
+use App\Core\Model;
 
 /**
  * Контакт
  *
+ * @property $user_link
  * @property $surname
  * @property $name
  * @property $last_name

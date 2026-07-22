@@ -12,11 +12,12 @@ return new class () extends Migration {
     {
         Schema::create('exp_contacts', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            $table->string('SURNAME', length: 50)->charset('utf8mb4')->nullable();
+            $table->timestamp('DATE_CREATE')->useCurrent();
+            $table->timestamp('DATE_UPDATE')->useCurrent()->useCurrentOnUpdate();
+            $table->foreignId('USER_ID')->constrained('users')->cascadeOnDelete();
             $table->string('NAME', length: 50)->charset('utf8mb4')->nullable(false);
-            $table->string('LAST_NAME', length: 50)->charset('utf8mb4')->nullable();
+            $table->string('SURNAME', length: 50)->charset('utf8mb4')->nullable();
+            $table->string('MIDDLE_NAME', length: 50)->charset('utf8mb4')->nullable();
             $table->string('EMAIL', length: 50)->charset('utf8mb4')->nullable();
             $table->string('PHONE', length: 20)->nullable();
             $table->date('BIRTH_DATE')->nullable();

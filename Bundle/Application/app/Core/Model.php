@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Core\Classes;
+namespace App\Core;
 
+use App\Core\Classes\Configurator;
 use Exception;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
  * Базовая модель
  */
-class Model extends EloquentModel
+abstract class Model extends EloquentModel
 {
     /**
      * @var string Имя конфигурации модели
      */
     public static string $config = '';
+
     /**
      * Создаёт новый экземпляр модели
      * @throws Exception
      */
     public function __construct(array $attributes = [])
     {
-        static::whenBooted(function () {
-            Configurator::new($this)->configure();
-        });
+        Configurator::new($this)->configure();
         parent::__construct($attributes);
     }
 

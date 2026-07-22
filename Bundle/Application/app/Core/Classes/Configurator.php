@@ -2,12 +2,21 @@
 
 namespace App\Core\Classes;
 
+use App\Core\Configuration\ModelConfiguration;
 use App\Core\Exceptions\ConfigException;
+use App\Core\Model;
 use Closure;
 use Exception;
 
+/**
+ * Устанавливает параметры модели в соответствии с её конфигурацией
+ */
 class Configurator
 {
+
+    /**
+     * @var ModelConfiguration Конфигурация модели
+     */
     private ModelConfiguration $configuration;
 
     /**
@@ -45,9 +54,9 @@ class Configurator
     private function resolveConfigData(): void
     {
         if ($this->model::$config === '') {
-            throw new ConfigException(static::class, 'Отсутствует привязка к конфигурации модели');
+            throw new ConfigException('Отсутствует привязка к конфигурации модели');
         }
-        $this->configuration = new ModelConfiguration($this->model::$config);
+        $this->configuration = ModelConfiguration::make($this->model::$config);
     }
 
     /**
@@ -57,11 +66,18 @@ class Configurator
     private function resolveCoreParams(): void
     {
         $coreData = $this->configuration->getCoreData();
+        // TODO: связать с HasUniqueIds
 
-        $tableName = $coreData['table'];
-        $this->model->setTable($tableName);
+        $this->model->setTable($coreData->getTable());
 
-        $this->model->timestamps = in_array('timestamps', $coreData['available_params']);
+        $connection = $coreData->getConnection();
+        if (!empty($connection)) {
+            $this->model->setConnection($connection);
+        }
+
+        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams());
+        // TODO вынести в CoreData
+        // TODO: связать с HasTimestamps
     }
 
     /**
@@ -70,13 +86,25 @@ class Configurator
      */
     private function resolveFieldsParams(): void
     {
-        $fields = $this->configuration->getFieldsData();
-        $castsData = array_map(fn ($params) => $params['cast'], $fields);
+        $fields = $this->configuration->getFields();
+
+        $castsData = $fields->getCastsMap();
         $this->model->mergeCasts($castsData);
+        // TODO: связать с HasAttributes
+
+
+
+        $fillableSet = $fields->getFillableSet();
+        if (!empty($fillableSet)) {
+            $this->model->fillable($fields->getFillableSet());
+            $this->model->guard([]);
+        }
+        //TODO: связать с GuardAttributes
     }
 
     private function resolveRelationsParams()
     {
+        //TODO соединить логику с HasRelationships
     }
 
     /**
@@ -88,7 +116,7 @@ class Configurator
      */
     public function setRawAttributes(array $attributes, bool $sync, Closure $setRawAttributes): mixed
     {
-        $map = $this->configuration->getFieldsAliasesMap(true);
+        $map = $this->configuration->getFields()->getAliasesMap(true);
 
         /**
          * Возвращает алиас для соответствующей колонки
@@ -114,7 +142,7 @@ class Configurator
      */
     public function prepareFieldsToDB(array $attributes): array
     {
-        $map = $this->configuration->getFieldsAliasesMap();
+        $map = $this->configuration->getFields()->getAliasesMap();
         $preparedFields = [];
         foreach ($attributes as $alias => $value) {
             if (isset($map[$alias])) {
