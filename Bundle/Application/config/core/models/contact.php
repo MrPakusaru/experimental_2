@@ -7,40 +7,50 @@ return [
         'available_params' => ['timestamps']
     ],
     'fields' => [
+        'date_create' => [
+            'column'        => 'DATE_CREATE',
+            'cast'          => '',
+            'requirements'  => [],
+        ],
+        'date_update'  => [
+            'column'        => 'DATE_UPDATE',
+            'cast'          => 'string',
+            'requirements'  => ['nullable'],
+        ],
         'user_link' => [
-            'column' => 'USER_ID',
-            'cast' => '',
-            'requirements' => ['fillable'],
+            'column'        => 'USER_ID',
+            'cast'          => '',
+            'requirements'  => ['fillable'],
         ],
         'name'  => [
-            'column' => 'NAME',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'column'        => 'NAME',
+            'cast'          => 'string',
+            'requirements'  => ['nullable', 'fillable'],
         ],
         'surname'  => [
-            'column' => 'SURNAME',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'column'        => 'SURNAME',
+            'cast'          => 'string',
+            'requirements'  => ['nullable', 'fillable'],
         ],
         'middle_name'  => [
-            'column' => 'MIDDLE_NAME',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'column'        => 'MIDDLE_NAME',
+            'cast'          => 'string',
+            'requirements'  => ['nullable', 'fillable'],
         ],
         'email' => [
-            'column' => 'EMAIL',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'column'        => 'EMAIL',
+            'cast'          => 'string',
+            'requirements'  => ['nullable', 'fillable'],
         ],
         'phone' => [
-            'column' => 'PHONE',
-            'cast' => 'string',
-            'requirements' => ['nullable', 'fillable'],
+            'column'        => 'PHONE',
+            'cast'          => 'string',
+            'requirements'  => ['nullable', 'fillable'],
         ],
         'birth_date' => [
-            'column' => 'BIRTH_DATE',
-            'cast' => '',
-            'requirements' => ['fillable'],
+            'column'        => 'BIRTH_DATE',
+            'cast'          => '',
+            'requirements'  => ['fillable'],
         ]
     ],
      'relations' => [
