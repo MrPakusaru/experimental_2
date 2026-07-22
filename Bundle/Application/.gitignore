@@ -27,3 +27,4 @@ Thumbs.db
 notes.txt
 .idea
 .php-cs-fixer.cache
+qodana.yaml
