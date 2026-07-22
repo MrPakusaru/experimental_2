@@ -16,15 +16,12 @@ final readonly class Checker
 
     /**
      * Возвращает новый экземпляр
-     * @return self
+     *
      * @throws BindingResolutionException
      */
-    public static function new(): self
+    public function __construct()
     {
-        $instance = new self();
-        $instance->validators = App::make(Validators::class);
-
-        return $instance;
+        $this->validators = App::make(Validators::class);
     }
 
     /**

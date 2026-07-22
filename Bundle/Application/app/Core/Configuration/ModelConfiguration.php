@@ -21,6 +21,9 @@ class ModelConfiguration
      */
     private const string DEFAULT_CONFIG_LOCATION = 'core.models';
 
+    /**
+     * @var Checker Класс, проверяющий корректность данных
+     */
     private Checker $checker;
 
     /**
@@ -47,11 +50,10 @@ class ModelConfiguration
      * Собирается по данным из конфигурации модели
      * @throws CheckerException
      * @throws ConfigException
-     * @throws BindingResolutionException
      */
     public function __construct(string $configName)
     {
-        $this->checker = Checker::new();
+        $this->checker = new Checker();
 
         $this->getConfigData($configName);
         $this->initData();
