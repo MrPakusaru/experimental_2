@@ -7,13 +7,15 @@ use App\Core\Configuration\Sections\SectionCore;
 use App\Core\Configuration\Sections\SectionFields;
 use App\Core\Exceptions\CheckerException;
 use App\Core\Exceptions\ConfigException;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use App\Core\Traits\SavedNamedInstances;
 
 /**
  * TODO добавить подпись
  */
 class ModelConfiguration
 {
+    use SavedNamedInstances;
+
     /**
      * Расположение конфигурации моделей по умолчанию
      */
