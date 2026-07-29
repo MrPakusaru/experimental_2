@@ -56,7 +56,7 @@ class Configurator
         if ($this->model::$config === '') {
             throw new ConfigException('Отсутствует привязка к конфигурации модели');
         }
-        $this->configuration = ModelConfiguration::make($this->model::$config);
+        $this->configuration = ModelConfiguration::getInstance($this->model::$config);
     }
 
     /**
