@@ -88,16 +88,20 @@ class Configurator
     {
         $fields = $this->configuration->getFields();
 
-        /* Set Casts */
+        /** Set Casts */
         $this->model->mergeCasts($fields->getCastsMap());
 
-
+        /**
+         * Set Fillable and Guards
+         *
+         * По умолчанию в приоритете fillable
+         * Даже если guarded - ['*']
+         * @see \Illuminate\Database\Eloquent\Concerns\GuardsAttributes::isFillable()
+         */
         $fillableSet = $fields->getFillableSet();
         if (!empty($fillableSet)) {
-            $this->model->fillable($fields->getFillableSet());
-            $this->model->guard([]);
+            $this->model->fillable($fillableSet);
         }
-        //TODO: связать с GuardAttributes
     }
 
     private function resolveRelationsParams()
