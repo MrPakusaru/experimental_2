@@ -106,4 +106,14 @@ class ModelConfiguration
     {
         return $this->relations;
     }
+
+    /**
+     * @inheritDoc
+     * @throws ConfigException
+     * @throws CheckerException
+     */
+    protected static function make(string $name): static
+    {
+        return new static($name);
+    }
 }
