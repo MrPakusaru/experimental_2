@@ -66,7 +66,6 @@ class Configurator
     private function resolveCoreParams(): void
     {
         $coreData = $this->configuration->getCoreData();
-        // TODO: связать с HasUniqueIds
 
         $this->model->setTable($coreData->getTable());
 
@@ -75,9 +74,7 @@ class Configurator
             $this->model->setConnection($connection);
         }
 
-        $this->model->timestamps = in_array('timestamps', $coreData->getAvailableParams());
-        // TODO вынести в CoreData
-        // TODO: связать с HasTimestamps
+        $this->model->timestamps = $coreData->timestamps();
     }
 
     /**
@@ -88,7 +85,7 @@ class Configurator
     {
         $fields = $this->configuration->getFields();
 
-        /** Set Casts */
+        /** Set Casts **/
         $this->model->mergeCasts($fields->getCastsMap());
 
         /**
@@ -97,7 +94,7 @@ class Configurator
          * По умолчанию в приоритете fillable
          * Даже если guarded - ['*']
          * @see \Illuminate\Database\Eloquent\Concerns\GuardsAttributes::isFillable()
-         */
+         **/
         $fillableSet = $fields->getFillableSet();
         if (!empty($fillableSet)) {
             $this->model->fillable($fillableSet);

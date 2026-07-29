@@ -27,6 +27,11 @@ final class SectionCore
     private readonly string $connection;
 
     /**
+     * @var bool Логический флаг активации created_at / updated_at
+     */
+    private readonly bool $timestamps;
+
+    /**
      * @var array Особенности модели
      */
     private readonly array $availableParams;
@@ -47,6 +52,7 @@ final class SectionCore
         try {
             $core->table = $checker->validateParam('table', $coreData['table'], 'required|string');
             $core->connection = $checker->validateParam('connection', $coreData['connection'], 'nullable|string');
+            $core->timestamps = $checker->validateParam('timestamps', $coreData['timestamps'], 'required|bool');
             $core->availableParams = $checker->validateParam('available_params', $coreData['available_params'], 'required|array');
         } catch (Exception $e) {
             throw ConfigException::from($e);
@@ -71,6 +77,16 @@ final class SectionCore
     public function getConnection(): string
     {
         return $this->connection;
+    }
+
+
+    /**
+     * Возвращает флаг активации created_at / updated_at
+     * @return bool
+     */
+    public function timestamps(): bool
+    {
+        return $this->timestamps;
     }
 
     /**
