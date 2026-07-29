@@ -106,7 +106,7 @@ final class SectionFields
     /**
      * Возвращает маппинг cast на алиасы полей в конфигурации
      *
-     * @return array Формат [alias => cast]
+     * @return array<string, string> Формат [alias => cast]
      */
     public function getCastsMap(): array
     {

@@ -13,7 +13,6 @@ use Exception;
  */
 class Configurator
 {
-
     /**
      * @var ModelConfiguration Конфигурация модели
      */
@@ -30,6 +29,7 @@ class Configurator
     }
 
     /**
+     * Статический конструктор
      * @throws Exception
      */
     public static function new(Model $model): static
@@ -88,10 +88,8 @@ class Configurator
     {
         $fields = $this->configuration->getFields();
 
-        $castsData = $fields->getCastsMap();
-        $this->model->mergeCasts($castsData);
-        // TODO: связать с HasAttributes
-
+        /* Set Casts */
+        $this->model->mergeCasts($fields->getCastsMap());
 
 
         $fillableSet = $fields->getFillableSet();
@@ -150,5 +148,14 @@ class Configurator
             }
         }
         return $preparedFields;
+    }
+
+    /**
+     * Возвращает параметры типизации полей
+     * @return array<string, string>
+     */
+    public function getCasts(): array
+    {
+        return $this->configuration->getFields()->getCastsMap();
     }
 }

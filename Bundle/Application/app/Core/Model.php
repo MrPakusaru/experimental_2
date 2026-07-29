@@ -38,6 +38,7 @@ abstract class Model extends EloquentModel
     }
 
     /**
+     * @inheritDoc
      * @return array<string, mixed>
      * @throws Exception
      */
@@ -47,11 +48,22 @@ abstract class Model extends EloquentModel
     }
 
     /**
+     * @inheritDoc
      * @return array<string, mixed>
      * @throws Exception
      */
     public function getDirty(): array
     {
         return Configurator::new($this)->prepareFieldsToDB(parent::getDirty());
+    }
+
+    /**
+     * @inheritDoc
+     * @return array<string, string>
+     * @throws Exception
+     */
+    protected function casts(): array
+    {
+        return Configurator::new($this)->getCasts();
     }
 }
