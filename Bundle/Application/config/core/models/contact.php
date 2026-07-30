@@ -8,6 +8,11 @@ return [
         'available_params' => ['timestamps']
     ],
     'fields' => [
+        'id' => [
+            'column'        => 'ID',
+            'cast'          => 'integer',
+            'requirements'  => [],
+        ],
         'date_create' => [
             'column'        => 'DATE_CREATE',
             'cast'          => '',
