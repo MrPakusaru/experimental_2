@@ -38,6 +38,7 @@ class Configurator
     }
 
     /**
+     * Модифицирует модель по параметрам конфигурации
      * @return void
      * @throws Exception
      */
