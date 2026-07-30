@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Контакт
@@ -17,6 +18,7 @@ use App\Core\Model;
  */
 final class Contact extends Model
 {
+    use HasFactory;
     /**
      * @var string Имя конфигурации модели
      */
