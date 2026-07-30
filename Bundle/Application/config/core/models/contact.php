@@ -4,6 +4,7 @@ return [
     'core' => [
         'table' => 'exp_contacts',
         'connection' => '',
+        'timestamps' => true,
         'available_params' => ['timestamps']
     ],
     'fields' => [
