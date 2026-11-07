@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Model;
+use App\LaravelModelConfigurator\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

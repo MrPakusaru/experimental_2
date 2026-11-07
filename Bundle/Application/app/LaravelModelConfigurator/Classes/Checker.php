@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Classes;
+namespace App\LaravelModelConfigurator\Classes;
 
-use App\Core\Exceptions\CheckerException;
+use App\LaravelModelConfigurator\Exceptions\CheckerException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Validation\Factory as Validators;

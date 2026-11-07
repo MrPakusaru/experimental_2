@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Exceptions;
+namespace App\LaravelModelConfigurator\Exceptions;
 
 use Exception;
 

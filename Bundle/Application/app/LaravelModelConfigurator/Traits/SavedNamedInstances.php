@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Traits;
+namespace App\LaravelModelConfigurator\Traits;
 
 /**
  * Добавляет функционал хранения нескольких именованных экземпляров класса

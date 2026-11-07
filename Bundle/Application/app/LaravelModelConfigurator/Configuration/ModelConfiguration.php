@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Configuration;
+namespace App\LaravelModelConfigurator\Configuration;
 
-use App\Core\Classes\Checker;
-use App\Core\Configuration\Sections\SectionCore;
-use App\Core\Configuration\Sections\SectionFields;
-use App\Core\Exceptions\CheckerException;
-use App\Core\Exceptions\ConfigException;
-use App\Core\Traits\SavedNamedInstances;
+use App\LaravelModelConfigurator\Classes\Checker;
+use App\LaravelModelConfigurator\Configuration\Sections\SectionCore;
+use App\LaravelModelConfigurator\Configuration\Sections\SectionFields;
+use App\LaravelModelConfigurator\Exceptions\CheckerException;
+use App\LaravelModelConfigurator\Exceptions\ConfigException;
+use App\LaravelModelConfigurator\Traits\SavedNamedInstances;
 
 /**
  * Содержит обработанные параметры модели

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Configuration\Sections;
+namespace App\LaravelModelConfigurator\Configuration\Sections;
 
-use App\Core\Classes\Checker;
-use App\Core\Exceptions\CheckerException;
+use App\LaravelModelConfigurator\Classes\Checker;
+use App\LaravelModelConfigurator\Exceptions\CheckerException;
 
 /**
  * Класс, управляющий параметрами поля модели

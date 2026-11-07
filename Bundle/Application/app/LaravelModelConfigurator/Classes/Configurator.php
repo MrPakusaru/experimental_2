@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Classes;
+namespace App\LaravelModelConfigurator\Classes;
 
-use App\Core\Configuration\ModelConfiguration;
-use App\Core\Exceptions\ConfigException;
-use App\Core\Model;
+use App\LaravelModelConfigurator\Configuration\ModelConfiguration;
+use App\LaravelModelConfigurator\Exceptions\ConfigException;
+use App\LaravelModelConfigurator\Model;
 use Closure;
 use Exception;
 
