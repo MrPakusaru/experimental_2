@@ -123,9 +123,7 @@ class Configurator
          * @param string $colName
          * @return string
          */
-        $alias = function (string $colName) use ($map) {
-            return $map[$colName] ?? $colName;
-        };
+        $alias = fn (string $colName) => $map[$colName] ?? $colName;
 
         $altributes = [];
         foreach ($attributes as $colName => $value) {
